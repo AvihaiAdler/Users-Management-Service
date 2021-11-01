@@ -15,5 +15,5 @@ public interface UsersService {
 	
 	public void deleteAllUsers();
 	
-	public List<PersonBoundary> getAllBy(String criteriaType, String criteriaValue, int size, int page);
+	public List<PersonBoundary> getAllBy(String criteriaType, String criteriaValue, int size, int page, String sortBy, String order);
 }

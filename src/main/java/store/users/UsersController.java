@@ -1,7 +1,5 @@
 package store.users;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import store.logic.UsersService;
 
 @RestController
-public class UsersController implements UsersService {
+public class UsersController {
 	private UsersService usersService;
 	
 	public UsersController() {}
@@ -24,7 +22,6 @@ public class UsersController implements UsersService {
 		usersService = service;
 	}
 
-	@Override
 	@RequestMapping(
 			path = "/users",
 			method = RequestMethod.POST,
@@ -35,7 +32,6 @@ public class UsersController implements UsersService {
 		return null;
 	}
 
-	@Override
 	@RequestMapping(
 			path = "/users/{email}",
 			method = RequestMethod.GET,
@@ -45,7 +41,6 @@ public class UsersController implements UsersService {
 		return null;
 	}
 
-	@Override
 	@RequestMapping(
 			path = "/users/login/{email}",
 			method = RequestMethod.GET,
@@ -57,7 +52,6 @@ public class UsersController implements UsersService {
 		return null;
 	}
 
-	@Override
 	@RequestMapping(
 			path = "/users/{email}",
 			method = RequestMethod.GET,
@@ -67,7 +61,6 @@ public class UsersController implements UsersService {
 		
 	}
 
-	@Override
 	@RequestMapping(
 			path = "/users",
 			method = RequestMethod.DELETE)
@@ -75,16 +68,17 @@ public class UsersController implements UsersService {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
 	@RequestMapping(
 			path = "/users/search",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<PersonBoundary> getAllBy(
+	public PersonBoundary[] getAllBy(
 			@RequestParam(name = "criteriaType", required = true) String criteriaType, 
 			@RequestParam(name = "criteriaValue", required = true) String criteriaValue, 
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size, 
-			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") String order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
