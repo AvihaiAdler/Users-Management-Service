@@ -9,23 +9,13 @@ import javax.persistence.Table;
 public class PersonEntity {
 	String id;
 	String email;
+	String domain;
 	String password;
-	String firstName;
-	String lastName;
-	String birthDate;
+	String firstName, lastName;
+	String birthYear, birthMonth, birthDay;
 	String roles;
 	
 	public PersonEntity() {}
-	
-	public PersonEntity(String id, String email, String password, String firstName, String lastName, String birthDate, String roles) {
-		setId(id);
-		setEmail(email);
-		setPassword(password);
-		setFirstName(firstName);
-		setLastName(lastName);
-		setBirthDate(birthDate);
-		setRoles(roles);
-	}
 	
 	@Id
 	public String getId() {
@@ -44,6 +34,14 @@ public class PersonEntity {
 		this.email = email;
 	}
 	
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -66,13 +64,30 @@ public class PersonEntity {
 		this.password = password;
 	}
 	
-	public String getBirthDate() {
-		return birthDate;
+	public String getBirthYear() {
+		return birthYear;
 	}
-	public void setBirthDate(String birthDate) {
-		this.birthDate = birthDate;
+
+	public void setBirthYear(String birthYear) {
+		this.birthYear = birthYear;
 	}
-	
+
+	public String getBirthMonth() {
+		return birthMonth;
+	}
+
+	public void setBirthMonth(String birthMonth) {
+		this.birthMonth = birthMonth;
+	}
+
+	public String getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
+	}
+
 	public String getRoles() {
 		return roles;
 	}
