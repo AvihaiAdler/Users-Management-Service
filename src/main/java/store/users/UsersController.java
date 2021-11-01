@@ -72,7 +72,20 @@ public class UsersController {
 			path = "/users/search",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public PersonBoundary[] getAllBy(
+	public PersonBoundary[] getAllUsers(
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size, 
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") String order) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@RequestMapping(
+			path = "/users/search",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public PersonBoundary[] getAllUsersBy(
 			@RequestParam(name = "criteriaType", required = true) String criteriaType, 
 			@RequestParam(name = "criteriaValue", required = true) String criteriaValue, 
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size, 
