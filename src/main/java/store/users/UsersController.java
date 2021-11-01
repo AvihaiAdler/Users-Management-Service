@@ -54,7 +54,7 @@ public class UsersController {
 
 	@RequestMapping(
 			path = "/users/{email}",
-			method = RequestMethod.GET,
+			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void updateUser(@PathVariable("email") String email, @RequestBody PersonBoundary pBoundary) {
 		// TODO Auto-generated method stub
