@@ -3,6 +3,7 @@ package store.users;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import store.dal.UsersDao;
+import store.data.PersonEntity;
 import store.exceptions.BadRequestException;
 import store.exceptions.ForbiddenRequestException;
 import store.exceptions.NotFoundException;
@@ -57,7 +59,7 @@ public class UsersService implements UsersServiceInterface{
 		if(!HelperClass.checkRoles(pBoundary.roles))
 			throw new BadRequestException("Ivalid roles");
 		
-		var optionalUsr = usersDao.findAllByEmail(pBoundary.email);
+		var optionalUsr = usersDao.findByEmail(pBoundary.email);
 		if(optionalUsr.isPresent())
 			throw new ForbiddenRequestException("User already exists");
 		
@@ -75,7 +77,7 @@ public class UsersService implements UsersServiceInterface{
 		if(!HelperClass.checkEmail(email))
 			throw new BadRequestException("Invalid email address");
 		
-		var optionalUsr = usersDao.findAllByEmail(email);
+		var optionalUsr = usersDao.findByEmail(email);
 		if(optionalUsr.isEmpty())
 			throw new NotFoundException("User doesn't exists");
 		
@@ -93,7 +95,7 @@ public class UsersService implements UsersServiceInterface{
 		if(!HelperClass.checkPassword(pwd))
 			throw new BadRequestException("Invalid password");
 		
-		var optionalUsr = usersDao.findAllByEmail(email);
+		var optionalUsr = usersDao.findByEmail(email);
 		if(optionalUsr.isEmpty())
 			throw new NotFoundException("User doesn't exists");
 		
@@ -115,7 +117,7 @@ public class UsersService implements UsersServiceInterface{
 		if(!HelperClass.checkEmail(email))
 			throw new BadRequestException("Invalid email address");
 		
-		var optionalUsr = usersDao.findAllByEmail(email);
+		var optionalUsr = usersDao.findByEmail(email);
 		if(optionalUsr.isEmpty())
 			throw new NotFoundException("User doesn't exists");
 		
@@ -138,12 +140,19 @@ public class UsersService implements UsersServiceInterface{
 			usrEntity.setRoles(Arrays.asList(pBoundary.getRoles()).stream().reduce("", (a, b)-> a + b + "@@"));
 	}
 
+	/*
+	 * delete all users
+	 */
 	@Override
 	@Transactional
 	public void deleteAllUsers() {
 		usersDao.deleteAll();
 	}
 
+	/*
+	 * get all users (all details besides their passwords) with pagination and sort support
+	 * returns null if no such users found 
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public List<PersonBoundary> getAllUsers(int size, int page, String sortBy, String order) {
@@ -152,18 +161,49 @@ public class UsersService implements UsersServiceInterface{
 		
 		Direction dir = order.equalsIgnoreCase("DESC") ? Direction.DESC : Direction.ASC; 
 		var allUsers = usersDao.findAll(PageRequest.of(page, size, dir, sortBy));
+		
+		if(allUsers == null)
+			return null;
+		
 		return StreamSupport
 				.stream(allUsers.spliterator(), false)
 				.map(u -> converter.toBoundary(u))
 				.collect(Collectors.toList());
 	}
 
+	/*
+	 * get all users who's criteria match the passed criteriaValue
+	 * returns null if no such users found  
+	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<PersonBoundary> getAllBy(String criteriaType, String criteriaValue, int size, int page, String sortBy,
-			String order) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PersonBoundary> getAllBy(
+			String criteriaType, String criteriaValue, 
+			int size, int page, 
+			String sortBy, String order) {
+		
+		criteriaValue = criteriaValue.toLowerCase();
+		
+		String[] criteria = {"domain", "year", "role"};
+		var criteriaLst = Arrays.asList(criteria);
+		
+		if(!criteriaLst.contains(criteriaType.toLowerCase()))
+			throw new BadRequestException("Invalid criteria");
+		
+		Direction dir = order.equalsIgnoreCase("DESC") ? Direction.DESC : Direction.ASC; 
+		
+		List<PersonEntity> searchedUsrs = Collections.emptyList();
+		if(criteriaType.equalsIgnoreCase(criteria[0]))	//search by domain
+			searchedUsrs = usersDao.findAllByEmailEndsWith_domain(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+		if(criteriaType.equalsIgnoreCase(criteria[1]))	//search by year
+			searchedUsrs = usersDao.findAllByBirthDateContaining_year(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+		if(criteriaType.equalsIgnoreCase(criteria[2]))	//search by role
+			searchedUsrs = usersDao.findAllByRolesContaining_role(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+		
+		return searchedUsrs
+				.stream()
+				.map(u -> converter.toBoundary(u))
+				.collect(Collectors.toList());
 	}
 
 }
