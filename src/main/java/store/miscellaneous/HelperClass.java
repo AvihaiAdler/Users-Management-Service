@@ -1,4 +1,4 @@
-package store.users;
+package store.miscellaneous;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -88,7 +88,11 @@ public class HelperClass {
 	}
 	
 	public static boolean checkRoles(String[] roles) {
-		var emptyRoles = Arrays.asList(roles).stream().filter(s -> s.isBlank()).collect(Collectors.toList());
+		var emptyRoles = Arrays.asList(roles)
+				.stream()
+				.filter(s -> s.isBlank())
+				.collect(Collectors.toList());
+		
 		if(emptyRoles.size() == 0)
 			return false;
 		return true;

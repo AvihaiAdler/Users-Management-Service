@@ -10,6 +10,7 @@ import store.exceptions.BadRequestException;
 import store.exceptions.ForbiddenRequestException;
 import store.logic.PersonEntityConverter;
 import store.logic.UsersServiceInterface;
+import store.miscellaneous.HelperClass;
 
 @Service
 public class UsersService implements UsersServiceInterface{
