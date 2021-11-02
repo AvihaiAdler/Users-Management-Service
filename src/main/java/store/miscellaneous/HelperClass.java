@@ -12,7 +12,17 @@ public class HelperClass {
 	private static String[] validMailServersPostfix = {"com", "org", "edu", "il"};
 	private static final int pwd_max_len = 5;
 	
+	/*
+	 * checks valid email
+	 * checks email has only one @ separator
+	 * checks email left side of the separator contains at least 2 chars
+	 * checks email starts with a letter
+	 * check email postfix to match the postfix list above
+	 */
 	public static boolean checkEmail(String email) {
+		if(email == null)
+			return false;
+		
 		var splitted = email.split("@");
 		if(splitted.length != 2)
 			return false;
@@ -33,6 +43,12 @@ public class HelperClass {
 		return true;
 	}
 	
+	/*
+	 * checks valid name
+	 * checks name consist of only 2 strings
+	 * check name consists of first and last name
+	 * checks first letter of both first & last name to be a letter
+	 */
 	public static boolean checkName(Map<String, String> name) {
 		if(name == null)
 			return false;
@@ -49,10 +65,20 @@ public class HelperClass {
 		return true;
 	}
 	
+	/*
+	 * checks valid password
+	 * checks password at least 5 chars long
+	 * checks password contains at least 1 digit
+	 * checks password not consist of digits entirely
+	 */
 	public static boolean checkPassword(String pwd) {
-		if(pwd.length() < pwd_max_len)
+		if(pwd == null)
+			return false;
+		if(pwd.isBlank())
 			return false;
 		
+		if(pwd.length() < pwd_max_len)
+			return false;	
 		
 		var digits = pwd.chars()		//get an IntStream with all the chars codes
 				.mapToObj(c -> (char)c)	//map each to a char
@@ -67,7 +93,15 @@ public class HelperClass {
 		return true;
 	}
 	
+	/*
+	 * checks if date is a valid date:
+	 * checks the date format
+	 * if the date received is futuristic - returns false
+	 * if the date received is more than 100 years in the past - returns false 
+	 */
 	public static boolean checkDate(String date) {
+		if(date == null)
+			return false;
 		LocalDate now = LocalDate.now();
 		
 		LocalDate recieved;
@@ -87,6 +121,9 @@ public class HelperClass {
 		return true;
 	}
 	
+	/*
+	 * check is any role is an empty string/string contains only whitespace chars
+	 */
 	public static boolean checkRoles(String[] roles) {
 		var emptyRoles = Arrays.asList(roles)
 				.stream()

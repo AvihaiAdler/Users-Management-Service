@@ -31,7 +31,8 @@ public class PersonEntityBoundaryConverter implements PersonEntityConverter{
 		fullName.put("last", entity.getLastName());
 		boundary.setName(fullName);
 		
-		boundary.setRoles(entity.getRoles().split("@@"));
+		if(entity.getRoles() != null)
+			boundary.setRoles(entity.getRoles().split("@@"));
 		
 		return boundary;
 	}
@@ -51,7 +52,9 @@ public class PersonEntityBoundaryConverter implements PersonEntityConverter{
 		entity.setLastName(boundary.getName().get("last"));
 		
 		String roles = Arrays.asList(boundary.getRoles()).stream().reduce("", (a, b)-> a + b + "@@");
-		entity.setRoles(roles);
+		
+		if(roles != null)
+			entity.setRoles(roles);
 		
 		return entity;
 	}
