@@ -1,8 +1,12 @@
 package store.data;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="USERS")
@@ -12,7 +16,7 @@ public class PersonEntity {
 	String domain;
 	String password;
 	String firstName, lastName;
-	String birthYear, birthMonth, birthDay;
+	LocalDate birthDate;
 	String roles;
 	
 	public PersonEntity() {}
@@ -63,29 +67,14 @@ public class PersonEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public String getBirthYear() {
-		return birthYear;
+
+	@Temporal(TemporalType.DATE)
+	public LocalDate getBirthDate() {
+		return birthDate;
 	}
 
-	public void setBirthYear(String birthYear) {
-		this.birthYear = birthYear;
-	}
-
-	public String getBirthMonth() {
-		return birthMonth;
-	}
-
-	public void setBirthMonth(String birthMonth) {
-		this.birthMonth = birthMonth;
-	}
-
-	public String getBirthDay() {
-		return birthDay;
-	}
-
-	public void setBirthDay(String birthDay) {
-		this.birthDay = birthDay;
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	public String getRoles() {

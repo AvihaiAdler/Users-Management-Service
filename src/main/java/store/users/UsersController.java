@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import store.logic.UsersService;
+import store.logic.UsersServiceInterface;
 
 @RestController
 public class UsersController {
-	private UsersService usersService;
+	private UsersServiceInterface usersService;
 	
 	public UsersController() {}
 	
 	@Autowired
-	public void setUsersService(UsersService service) {
+	public void setUsersService(UsersServiceInterface service) {
 		usersService = service;
 	}
 
@@ -28,8 +28,7 @@ public class UsersController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public PersonBoundary createUser(@RequestBody PersonBoundary pBoundary) {
-		// TODO Auto-generated method stub
-		return null;
+		return usersService.createUser(pBoundary);
 	}
 
 	@RequestMapping(
@@ -37,8 +36,7 @@ public class UsersController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public PersonBoundary getUser(@PathVariable("email") String email) {
-		// TODO Auto-generated method stub
-		return null;
+		return usersService.getUser(email);
 	}
 
 	@RequestMapping(
@@ -48,8 +46,7 @@ public class UsersController {
 	public PersonBoundary login(
 			@PathVariable("email") String email, 
 			@RequestParam(name = "password", required = true) String pwd) {
-		// TODO Auto-generated method stub
-		return null;
+		return usersService.login(email, pwd);
 	}
 
 	@RequestMapping(
@@ -57,15 +54,14 @@ public class UsersController {
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void updateUser(@PathVariable("email") String email, @RequestBody PersonBoundary pBoundary) {
-		// TODO Auto-generated method stub
-		
+		usersService.updateUser(email, pBoundary);
 	}
 
 	@RequestMapping(
 			path = "/users",
 			method = RequestMethod.DELETE)
 	public void deleteAllUsers() {
-		// TODO Auto-generated method stub
+		usersService.deleteAllUsers();
 	}
 
 	@RequestMapping(
@@ -77,8 +73,7 @@ public class UsersController {
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,
 			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") String order) {
-		// TODO Auto-generated method stub
-		return null;
+		return usersService.getAllUsers(size, page, sortBy, order).toArray(new PersonBoundary[0]);
 	}
 	
 	@RequestMapping(
@@ -92,7 +87,6 @@ public class UsersController {
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,
 			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") String order) {
-		// TODO Auto-generated method stub
-		return null;
+		return usersService.getAllBy(criteriaType, criteriaValue, size, page, sortBy, order).toArray(new PersonBoundary[0]);
 	}
 }

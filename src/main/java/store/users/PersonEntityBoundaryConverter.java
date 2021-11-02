@@ -1,5 +1,7 @@
 package store.users;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -22,7 +24,7 @@ public class PersonEntityBoundaryConverter implements PersonEntityConverter{
 		boundary.setEmail(entity.getEmail());
 		boundary.setPassword("*".repeat(pwdLength));
 		
-		boundary.setBirthDate(entity.getBirthDay() + "-" + entity.getBirthMonth() + "-" + entity.getBirthYear());
+		boundary.setBirthDate(entity.getBirthDate().toString());
 		
 		var fullName = new TreeMap<String, String>();
 		fullName.put("first", entity.getFirstName());
@@ -42,10 +44,8 @@ public class PersonEntityBoundaryConverter implements PersonEntityConverter{
 		entity.setDomain(boundary.getEmail().split("@")[1]);
 		entity.setPassword(boundary.getPassword());
 		
-		var birthDate = boundary.getBirthDate().split("-");
-		entity.setBirthDay(birthDate[0]);
-		entity.setBirthMonth(birthDate[1]);
-		entity.setBirthYear(birthDate[2]);
+		LocalDate date = LocalDate.parse(boundary.birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+		entity.setBirthDate(date);
 		
 		entity.setFirstName(boundary.getName().get("first"));
 		entity.setLastName(boundary.getName().get("last"));
