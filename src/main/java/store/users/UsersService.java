@@ -158,14 +158,11 @@ public class UsersService implements UsersServiceInterface{
 	@Override
 	@Transactional(readOnly = true)
 	public List<PersonBoundary> getAllUsers(int size, int page, String sortBy, String order) {
-		if(!order.equalsIgnoreCase("ASC") || order.equalsIgnoreCase("DESC"))
+		if(!order.equalsIgnoreCase("ASC") || !order.equalsIgnoreCase("DESC"))
 			throw new BadRequestException("Invalid order");
 		
 		Direction dir = order.equalsIgnoreCase("DESC") ? Direction.DESC : Direction.ASC; 
 		var allUsers = usersDao.findAll(PageRequest.of(page, size, dir, sortBy));
-		
-		if(allUsers == null)
-			return null;
 		
 		return StreamSupport
 				.stream(allUsers.spliterator(), false)
@@ -183,6 +180,9 @@ public class UsersService implements UsersServiceInterface{
 			String criteriaType, String criteriaValue, 
 			int size, int page, 
 			String sortBy, String order) {
+		
+		if(!order.equalsIgnoreCase("ASC") || !order.equalsIgnoreCase("DESC"))
+			throw new BadRequestException("Invalid order");
 		
 		criteriaValue = criteriaValue.toLowerCase();
 		
