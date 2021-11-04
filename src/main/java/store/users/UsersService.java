@@ -138,6 +138,8 @@ public class UsersService implements UsersServiceInterface{
 			usrEntity.setBirthDate(LocalDate.parse(pBoundary.birthDate, DateTimeFormatter.ofPattern("dd-MM-yyy")));
 		if(HelperClass.checkRoles(pBoundary.roles))
 			usrEntity.setRoles(Arrays.asList(pBoundary.getRoles()).stream().reduce("", (a, b)-> a + b + "@@"));
+		
+		usersDao.save(usrEntity);
 	}
 
 	/*
