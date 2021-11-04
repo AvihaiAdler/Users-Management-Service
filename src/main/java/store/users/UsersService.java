@@ -170,7 +170,7 @@ public class UsersService implements UsersServiceInterface{
 		
 		return StreamSupport
 				.stream(allUsers.spliterator(), false)
-				.map(u -> converter.toBoundary(u))
+				.map(converter::toBoundary)
 				.collect(Collectors.toList());
 	}
 
@@ -208,7 +208,7 @@ public class UsersService implements UsersServiceInterface{
 		
 		return searchedUsrs
 				.stream()
-				.map(u -> converter.toBoundary(u))
+				.map(converter::toBoundary)
 				.collect(Collectors.toList());
 	}
 
