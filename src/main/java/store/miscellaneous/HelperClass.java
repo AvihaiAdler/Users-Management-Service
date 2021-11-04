@@ -127,7 +127,7 @@ public class HelperClass {
 	public static boolean checkRoles(String[] roles) {
 		var emptyRoles = Arrays.asList(roles)
 				.stream()
-				.filter(s -> s.isBlank())
+				.filter(s -> s.isEmpty())
 				.collect(Collectors.toList());
 		
 		if(emptyRoles.size() == 0)

@@ -24,6 +24,10 @@ import store.logic.PersonEntityConverter;
 import store.logic.UsersServiceInterface;
 import store.miscellaneous.HelperClass;
 
+/*
+ * TODO:
+ * implements checks for each criteria in public List<PersonBoundary> getAllBy
+ */
 @Service
 public class UsersService implements UsersServiceInterface{
 	private UsersDao usersDao;
