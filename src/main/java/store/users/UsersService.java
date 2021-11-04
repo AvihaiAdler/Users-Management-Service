@@ -49,7 +49,7 @@ public class UsersService implements UsersServiceInterface{
 	 */
 	@Override
 	@Transactional
-	public PersonBoundary createUser(PersonBoundary pBoundary) {
+	public PersonBoundaryWithoutPwd createUser(PersonBoundary pBoundary) {
 		if(pBoundary == null)
 			throw new BadRequestException("Null arguments received");
 		if(!HelperClass.checkEmail(pBoundary.email))
@@ -77,7 +77,7 @@ public class UsersService implements UsersServiceInterface{
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public PersonBoundary getUser(String email) {
+	public PersonBoundaryWithoutPwd getUser(String email) {
 		if(!HelperClass.checkEmail(email))
 			throw new BadRequestException("Invalid email address");
 		
@@ -93,7 +93,7 @@ public class UsersService implements UsersServiceInterface{
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public PersonBoundary login(String email, String pwd) {
+	public PersonBoundaryWithoutPwd login(String email, String pwd) {
 		if(!HelperClass.checkEmail(email))
 			throw new BadRequestException("Invalid email address");
 		if(!HelperClass.checkPassword(pwd))
@@ -161,7 +161,7 @@ public class UsersService implements UsersServiceInterface{
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<PersonBoundary> getAllUsers(int size, int page, String sortBy, String order) {
+	public List<PersonBoundaryWithoutPwd> getAllUsers(int size, int page, String sortBy, String order) {
 		if(!order.equalsIgnoreCase("ASC") || !order.equalsIgnoreCase("DESC"))
 			throw new BadRequestException("Invalid order");
 		
@@ -180,7 +180,7 @@ public class UsersService implements UsersServiceInterface{
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<PersonBoundary> getAllBy(
+	public List<PersonBoundaryWithoutPwd> getAllBy(
 			String criteriaType, String criteriaValue, 
 			int size, int page, 
 			String sortBy, String order) {

@@ -14,13 +14,13 @@ import store.logic.PersonEntityConverter;
  */
 
 public class PersonEntityBoundaryConverter implements PersonEntityConverter{
-	private final int pwdLength = 8;
+//	private final int pwdLength = 8;
 	
 	@Override
-	public PersonBoundary toBoundary(PersonEntity entity) {
-		var boundary = new PersonBoundary();
+	public PersonBoundaryWithoutPwd toBoundary(PersonEntity entity) {
+		var boundary = new PersonBoundaryWithoutPwd();
 		boundary.setEmail(entity.getEmail());
-		boundary.setPassword("*".repeat(pwdLength));
+//		boundary.setPassword("*".repeat(pwdLength));
 		
 		boundary.setBirthDate(entity.getBirthDate().toString());
 		
