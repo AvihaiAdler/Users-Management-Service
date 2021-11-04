@@ -186,7 +186,7 @@ public class UsersService implements UsersServiceInterface{
 		
 		criteriaValue = criteriaValue.toLowerCase();
 		
-		String[] criteria = {"domain", "year", "role"};
+		String[] criteria = {"byEmailDomain", "byBirthYear", "byRole"};
 		var criteriaLst = Arrays.asList(criteria);
 		
 		if(!criteriaLst.contains(criteriaType.toLowerCase()))

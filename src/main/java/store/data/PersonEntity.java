@@ -11,7 +11,6 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="USERS")
 public class PersonEntity {
-	String id;
 	String email;
 	String domain;
 	String password;
@@ -21,15 +20,7 @@ public class PersonEntity {
 	
 	public PersonEntity() {}
 	
-	@Id
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
-	
+	@Id	
 	public String getEmail() {
 		return email;
 	}

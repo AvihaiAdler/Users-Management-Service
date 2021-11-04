@@ -3,7 +3,6 @@ package store.users;
 import java.util.Map;
 
 public class PersonBoundary {
-	String id;
 	String email;
 	String password;
 	Map<String, String> name;
@@ -12,22 +11,12 @@ public class PersonBoundary {
 	
 	public PersonBoundary() {}
 	
-	public PersonBoundary(String id, String email, String password, Map<String, String> name, String birthDate, String[] roles) {
-		setId(id);
+	public PersonBoundary(String email, String password, Map<String, String> name, String birthDate, String[] roles) {
 		setEmail(email);
 		setPassword(password);
 		setName(name);
 		setBirthDate(birthDate);
 		setRoles(roles);
-	}
-
-	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getEmail() {

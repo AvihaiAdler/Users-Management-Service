@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.TreeMap;
-import java.util.UUID;
 
 import store.data.PersonEntity;
 import store.logic.PersonEntityConverter;
@@ -20,7 +19,6 @@ public class PersonEntityBoundaryConverter implements PersonEntityConverter{
 	@Override
 	public PersonBoundary toBoundary(PersonEntity entity) {
 		var boundary = new PersonBoundary();
-		boundary.setId(entity.getId());
 		boundary.setEmail(entity.getEmail());
 		boundary.setPassword("*".repeat(pwdLength));
 		
@@ -40,7 +38,6 @@ public class PersonEntityBoundaryConverter implements PersonEntityConverter{
 	@Override
 	public PersonEntity toEntity(PersonBoundary boundary) {
 		var entity = new PersonEntity();
-		entity.setId(UUID.randomUUID().toString());
 		entity.setEmail(boundary.getEmail());
 		entity.setDomain(boundary.getEmail().split("@")[1]);
 		entity.setPassword(boundary.getPassword());
