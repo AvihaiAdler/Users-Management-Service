@@ -23,10 +23,6 @@ import store.logic.PersonEntityConverter;
 import store.logic.UsersServiceInterface;
 import store.miscellaneous.HelperClass;
 
-/*
- * TODO:
- * implements checks for each criteria in public List<PersonBoundary> getAllBy
- */
 @Service
 public class UsersService implements UsersServiceInterface{
 	private UsersDao usersDao;
@@ -133,12 +129,12 @@ public class UsersService implements UsersServiceInterface{
 			var firstName = pBoundary.name.get("first");
 			var lastName = pBoundary.name.get("last");
 			if(firstName != null)
-				usrEntity.setFirstName(firstName);
+				usrEntity.setFirstname(firstName);
 			if(lastName != null)
-				usrEntity.setLastName(lastName);
+				usrEntity.setLastname(lastName);
 		}
 		if(HelperClass.checkDate(pBoundary.birthDate))
-			usrEntity.setBirthDate(LocalDate.parse(pBoundary.birthDate, DateTimeFormatter.ofPattern("dd-MM-yyy")));
+			usrEntity.setBirthdate(LocalDate.parse(pBoundary.birthDate, DateTimeFormatter.ofPattern("dd-MM-yyy")));
 		if(HelperClass.checkRoles(pBoundary.roles))
 			usrEntity.setRoles(Arrays.asList(pBoundary.getRoles()).stream().reduce("", (a, b)-> a + b + "@@"));
 		
@@ -168,25 +164,34 @@ public class UsersService implements UsersServiceInterface{
 		if(!order.equalsIgnoreCase("ASC") && !order.equalsIgnoreCase("DESC"))
 			throw new BadRequestException("Invalid sorting order");
 		
-		criteriaValue = criteriaValue.toLowerCase();
-		
-		String[] criteria = {"byemaildomain", "bybirthyear", "byrole", "none"};
+		//check criteriaType
+		String[] criteria = {"byemaildomain", "bybirthyear", "byrole"};
 		var criteriaLst = Arrays.asList(criteria);
 		
-		if(!criteriaLst.contains(criteriaType.toLowerCase()))
+		if(criteriaType != null && !criteriaLst.contains(criteriaType.toLowerCase()))
 			throw new BadRequestException("Invalid criteria");
+		
+		//check sortBy
+		var sortByLst = Arrays.asList("email", "firstname", "lastname", "birthdate", "domain");
+		if(!sortByLst.contains(sortBy.toLowerCase()))
+			throw new BadRequestException("Unsupported sortBy parameter");
 		
 		Direction dir = order.equalsIgnoreCase("DESC") ? Direction.DESC : Direction.ASC; 
 		
+		sortBy = sortBy.toLowerCase();
 		List<PersonEntity> searchedUsrs = Collections.emptyList();
-		if(criteriaType.equalsIgnoreCase(criteria[0]))	//search by domain
-			searchedUsrs = usersDao.findByEmail_EndsWith(criteriaValue, PageRequest.of(page, size, dir, sortBy));
-		if(criteriaType.equalsIgnoreCase(criteria[1]))	//search by year
-			searchedUsrs = usersDao.findByBirthDate_Containing(criteriaValue, PageRequest.of(page, size, dir, sortBy));
-		if(criteriaType.equalsIgnoreCase(criteria[2]))	//search by role
-			searchedUsrs = usersDao.findByRoles_Containing(criteriaValue, PageRequest.of(page, size, dir, sortBy));
-		if(criteriaType.equalsIgnoreCase(criteria[3]))
+		if(criteriaType == null) {	//get all users		
 			searchedUsrs = usersDao.findAll(PageRequest.of(page, size, dir, sortBy)).getContent();
+		}
+		else {		
+			criteriaValue = criteriaValue.toLowerCase();
+			if(criteriaType.equalsIgnoreCase(criteria[0]))	//search by domain
+				searchedUsrs = usersDao.findByEmail_EndsWith(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+			if(criteriaType.equalsIgnoreCase(criteria[1]))	//search by year
+				searchedUsrs = usersDao.findByBirthDate_Containing(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+			if(criteriaType.equalsIgnoreCase(criteria[2]))	//search by role
+				searchedUsrs = usersDao.findByRoles_Containing(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+		}
 		
 		return searchedUsrs
 				.stream()

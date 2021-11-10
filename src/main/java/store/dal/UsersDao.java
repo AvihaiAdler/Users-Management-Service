@@ -16,7 +16,7 @@ public interface UsersDao extends PagingAndSortingRepository<PersonEntity, Strin
 			@Param("domain") String domain,
 			Pageable page);
 		
-	@Query(value = "select * from users where birth_date like ?1%", nativeQuery = true)
+	@Query(value = "select * from users where BIRTHDATE like ?1%", nativeQuery = true)
 	public List<PersonEntity> findByBirthDate_Containing(
 			@Param("year") String year,
 			Pageable page);

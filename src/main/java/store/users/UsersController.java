@@ -69,8 +69,8 @@ public class UsersController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public PersonBoundaryWithoutPwd[] getAllUsersByParam(
-			@RequestParam(name = "criteriaType", required = true, defaultValue = "none") String criteriaType, 
-			@RequestParam(name = "criteriaValue", required = true, defaultValue = "none") String criteriaValue, 
+			@RequestParam(name = "criteriaType", required = false) String criteriaType, 
+			@RequestParam(name = "criteriaValue", required = false) String criteriaValue, 
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size, 
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "sortBy", required = false, defaultValue = "email") String sortBy,

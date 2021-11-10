@@ -1,6 +1,8 @@
 package store.data;
 
 import java.time.LocalDate;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,7 +13,7 @@ public class PersonEntity {
 	String email;
 	String domain;
 	String password;
-	String firstName, lastName;
+	String firstname, lastname;
 	LocalDate birthDate;
 	String roles;
 	
@@ -33,21 +35,25 @@ public class PersonEntity {
 	public void setDomain(String domain) {
 		this.domain = domain;
 	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	
+	@Column(name = "FISRTNAME")
+	public String getFirstname() {
+		return firstname;
 	}
 	
-	public String getLastName() {
-		return lastName;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	@Column(name = "LASTNAME")
+	public String getLastname() {
+		return lastname;
 	}
+	
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+	
 	public String getPassword() {
 		return password;
 	}
@@ -56,11 +62,12 @@ public class PersonEntity {
 		this.password = password;
 	}
 
-	public LocalDate getBirthDate() {
+	@Column(name = "BIRTHDATE")
+	public LocalDate getBirthdate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthdate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 

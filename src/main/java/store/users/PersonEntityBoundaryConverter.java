@@ -24,11 +24,11 @@ public class PersonEntityBoundaryConverter implements PersonEntityConverter{
 		boundary.setEmail(entity.getEmail());
 //		boundary.setPassword("*".repeat(pwdLength));
 		
-		boundary.setBirthDate(entity.getBirthDate().toString());
+		boundary.setBirthDate(entity.getBirthdate().toString());
 		
 		var fullName = new TreeMap<String, String>();
-		fullName.put("first", entity.getFirstName());
-		fullName.put("last", entity.getLastName());
+		fullName.put("first", entity.getFirstname());
+		fullName.put("last", entity.getLastname());
 		boundary.setName(fullName);
 		
 		if(entity.getRoles() != null)
@@ -45,10 +45,10 @@ public class PersonEntityBoundaryConverter implements PersonEntityConverter{
 		entity.setPassword(boundary.getPassword());
 		
 		LocalDate date = LocalDate.parse(boundary.birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-		entity.setBirthDate(date);
+		entity.setBirthdate(date);
 		
-		entity.setFirstName(boundary.getName().get("first"));
-		entity.setLastName(boundary.getName().get("last"));
+		entity.setFirstname(boundary.getName().get("first"));
+		entity.setLastname(boundary.getName().get("last"));
 		
 		String roles = Arrays.asList(boundary.getRoles()).stream().reduce("", (a, b)-> a + b + "@@");
 		
