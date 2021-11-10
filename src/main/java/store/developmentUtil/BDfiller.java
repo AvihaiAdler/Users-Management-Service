@@ -1,4 +1,4 @@
-package store.debug;
+package store.developmentUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,12 +6,14 @@ import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import store.logic.UsersServiceInterface;
 import store.users.PersonBoundary;
 
 @Component
+@Profile("development")
 public class BDfiller implements CommandLineRunner{
 	private UsersServiceInterface usersService;
 	
