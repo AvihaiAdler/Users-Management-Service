@@ -16,7 +16,5 @@ public interface UsersServiceInterface {
 	
 	public void deleteAllUsers();
 	
-	public List<PersonBoundaryWithoutPwd> getAllUsers(int size, int page, String sortBy, String order);
-	
 	public List<PersonBoundaryWithoutPwd> getAllBy(String criteriaType, String criteriaValue, int size, int page, String sortBy, String order);
 }

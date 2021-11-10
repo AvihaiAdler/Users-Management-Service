@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.TreeMap;
 
+import org.springframework.stereotype.Component;
+
 import store.data.PersonEntity;
 import store.logic.PersonEntityConverter;
 
@@ -12,7 +14,7 @@ import store.logic.PersonEntityConverter;
  * @@ - acts as a separator between roles. e.g: manager$$admin$$... 
  * passwords gets returned as **** with the length of 8
  */
-
+@Component
 public class PersonEntityBoundaryConverter implements PersonEntityConverter{
 //	private final int pwdLength = 8;
 	

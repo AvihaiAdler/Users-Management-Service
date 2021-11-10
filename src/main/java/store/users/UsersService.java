@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -156,25 +155,6 @@ public class UsersService implements UsersServiceInterface{
 	}
 
 	/*
-	 * get all users (all details besides their passwords) with pagination and sort support
-	 * returns null if no such users found 
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public List<PersonBoundaryWithoutPwd> getAllUsers(int size, int page, String sortBy, String order) {
-		if(!order.equalsIgnoreCase("ASC") || !order.equalsIgnoreCase("DESC"))
-			throw new BadRequestException("Invalid order");
-		
-		Direction dir = order.equalsIgnoreCase("DESC") ? Direction.DESC : Direction.ASC; 
-		var allUsers = usersDao.findAll(PageRequest.of(page, size, dir, sortBy));
-		
-		return StreamSupport
-				.stream(allUsers.spliterator(), false)
-				.map(converter::toBoundary)
-				.collect(Collectors.toList());
-	}
-
-	/*
 	 * get all users who's criteria match the passed criteriaValue
 	 * returns null if no such users found  
 	 */
@@ -184,13 +164,13 @@ public class UsersService implements UsersServiceInterface{
 			String criteriaType, String criteriaValue, 
 			int size, int page, 
 			String sortBy, String order) {
-		
-		if(!order.equalsIgnoreCase("ASC") || !order.equalsIgnoreCase("DESC"))
-			throw new BadRequestException("Invalid order");
+	
+		if(!order.equalsIgnoreCase("ASC") && !order.equalsIgnoreCase("DESC"))
+			throw new BadRequestException("Invalid sorting order");
 		
 		criteriaValue = criteriaValue.toLowerCase();
 		
-		String[] criteria = {"byEmailDomain", "byBirthYear", "byRole"};
+		String[] criteria = {"byemaildomain", "bybirthyear", "byrole", "none"};
 		var criteriaLst = Arrays.asList(criteria);
 		
 		if(!criteriaLst.contains(criteriaType.toLowerCase()))
@@ -200,11 +180,13 @@ public class UsersService implements UsersServiceInterface{
 		
 		List<PersonEntity> searchedUsrs = Collections.emptyList();
 		if(criteriaType.equalsIgnoreCase(criteria[0]))	//search by domain
-			searchedUsrs = usersDao.findAllByEmailEndsWith_domain(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+			searchedUsrs = usersDao.findByEmail_EndsWith(criteriaValue, PageRequest.of(page, size, dir, sortBy));
 		if(criteriaType.equalsIgnoreCase(criteria[1]))	//search by year
-			searchedUsrs = usersDao.findAllByBirthDateContaining_year(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+			searchedUsrs = usersDao.findByBirthDate_Containing(criteriaValue, PageRequest.of(page, size, dir, sortBy));
 		if(criteriaType.equalsIgnoreCase(criteria[2]))	//search by role
-			searchedUsrs = usersDao.findAllByRolesContaining_role(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+			searchedUsrs = usersDao.findByRoles_Containing(criteriaValue, PageRequest.of(page, size, dir, sortBy));
+		if(criteriaType.equalsIgnoreCase(criteria[3]))
+			searchedUsrs = usersDao.findAll(PageRequest.of(page, size, dir, sortBy)).getContent();
 		
 		return searchedUsrs
 				.stream()

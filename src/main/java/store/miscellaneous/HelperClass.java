@@ -122,7 +122,7 @@ public class HelperClass {
 	}
 	
 	/*
-	 * check is any role is an empty string/string contains only whitespace chars
+	 * check is any role is an empty string
 	 */
 	public static boolean checkRoles(String[] roles) {
 		var emptyRoles = Arrays.asList(roles)
@@ -131,7 +131,7 @@ public class HelperClass {
 				.collect(Collectors.toList());
 		
 		if(emptyRoles.size() == 0)
-			return false;
-		return true;
+			return true;
+		return false;
 	}
 }

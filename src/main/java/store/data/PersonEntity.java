@@ -1,17 +1,9 @@
 package store.data;
 
 import java.time.LocalDate;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-/*
- * TODO:
- * LocalDate isn't supported. 
- */
 
 @Entity
 @Table(name="USERS")
@@ -64,7 +56,6 @@ public class PersonEntity {
 		this.password = password;
 	}
 
-	@Temporal(TemporalType.DATE)
 	public LocalDate getBirthDate() {
 		return birthDate;
 	}
